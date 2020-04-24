@@ -1,13 +1,13 @@
-package br.com.savasoft.examples.springrest;
+package app;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SpringRestApplication {
+public class Application {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SpringRestApplication.class, args);
+		SpringApplication.run(Application.class, args);
 	}
 
 }
