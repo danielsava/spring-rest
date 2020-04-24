@@ -1,2 +1,2 @@
 # spring-rest
-Projeto Referência Spring Rest teste
+Projeto Referência Spring Rest
