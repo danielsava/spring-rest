@@ -3,6 +3,7 @@ package app.api.controller;
 
 import app.domain.model.Cliente;
 import app.domain.repository.ClienteRepository;
+import app.service.CadastroClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,11 @@ public class ClienteController {
     //private EntityManager manager;
 
     @Autowired
-    ClienteRepository clienteRepository;
+    private ClienteRepository clienteRepository;
+
+    @Autowired
+    private CadastroClienteService clienteService;
+
 
     @GetMapping
     public List<Cliente> listar() {
@@ -36,8 +41,8 @@ public class ClienteController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Cliente adicionar(@Valid @RequestBody Cliente cliente) {
-        return clienteRepository.save(cliente);
+    public Cliente salvar(@Valid @RequestBody Cliente cliente) {
+        return clienteService.salvar(cliente);
     }
 
     @PutMapping("/{id}")
@@ -47,7 +52,7 @@ public class ClienteController {
             return ResponseEntity.noContent().build();
 
         cliente.setId(id);
-        cliente = clienteRepository.save(cliente);
+        cliente = clienteService.salvar(cliente);
         return ResponseEntity.ok().body(cliente);
 
     }
@@ -56,7 +61,7 @@ public class ClienteController {
     public ResponseEntity<Void> remover(@PathVariable Long id) {
         if(!clienteRepository.existsById(id))
             return ResponseEntity.noContent().build();
-        clienteRepository.deleteById(id);
+        clienteService.excluir(id);
         return ResponseEntity.ok().build();
     }
 

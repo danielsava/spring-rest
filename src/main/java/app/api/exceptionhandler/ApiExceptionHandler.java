@@ -1,5 +1,6 @@
 package app.api.exceptionhandler;
 
+import app.exception.NegocioException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -10,6 +11,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -23,6 +25,22 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     @Autowired
     private MessageSource messageSource;
 
+    /* Manipula Exception do Sistema */
+    @ExceptionHandler(NegocioException.class)
+    public ResponseEntity<Object> handleNegocioException(NegocioException ex, WebRequest webRequest) {
+
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+
+        Problema problema = new Problema();
+        problema.setStatus(status.value());
+        problema.setTitulo(ex.getMessage());
+        problema.setDataHora(LocalDateTime.now());
+
+        return this.handleExceptionInternal(ex, problema, new HttpHeaders(), status, webRequest);
+    }
+
+
+    /* Manipula Exception do Bean Validation, onde foi utilizada o @Valid no argumento dos métodos */
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
 
