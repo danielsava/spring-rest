@@ -1,0 +1,3 @@
+ - Um arquivo de script (V00*_<nome>) que já foi executado pela aplicação (e mapeado pelo flyaway) NÃO PODE SER
+   executado novamente. Caso seja realmente necessária a execução do arquivo alterado, a linha relativa na tabela do
+   flyaway na base de dados deve ser alterada.
