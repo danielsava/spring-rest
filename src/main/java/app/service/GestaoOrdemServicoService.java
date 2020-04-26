@@ -1,10 +1,13 @@
 package app.service;
 
 import app.domain.model.Cliente;
+import app.domain.model.Comentario;
 import app.domain.model.OrdemServico;
 import app.domain.model.StatusOrdemServico;
 import app.domain.repository.ClienteRepository;
+import app.domain.repository.ComentarioRepository;
 import app.domain.repository.OrdemServicoRepository;
+import app.exception.EntidadeNotFoundException;
 import app.exception.NegocioException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,10 +18,13 @@ import java.time.OffsetDateTime;
 public class GestaoOrdemServicoService {
 
     @Autowired
-    private OrdemServicoRepository repository;
+    private OrdemServicoRepository ordemServicoRepository;
 
     @Autowired
     private ClienteRepository clienteRepository;
+
+    @Autowired
+    private ComentarioRepository comentarioRepository;
 
     public OrdemServico criar(OrdemServico ordemServico) {
 
@@ -29,7 +35,21 @@ public class GestaoOrdemServicoService {
         ordemServico.setStatus(StatusOrdemServico.ABERTA);
         ordemServico.setDataAbertura(OffsetDateTime.now());
 
-        return repository.save(ordemServico);
+        return ordemServicoRepository.save(ordemServico);
+    }
+
+    public Comentario adicionarComentario(Long ordemServicoId, String descricao) {
+
+        OrdemServico ordemServico = ordemServicoRepository.findById(ordemServicoId)
+                .orElseThrow(() -> new EntidadeNotFoundException("Ordem Servico não existe "));
+
+        Comentario comentario = new Comentario();
+        comentario.setDataEnvio(OffsetDateTime.now());
+        comentario.setDescricao(descricao);
+        comentario.setOrdemServico(ordemServico);
+
+        return comentarioRepository.save(comentario);
+
     }
 
 }

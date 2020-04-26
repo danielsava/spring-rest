@@ -15,6 +15,7 @@ public class OrdemServicoModel {
 
     private Long id;
     private String nomeCliente;
+    private ClienteModel cliente;
     private String descricao;
     private BigDecimal preco;
     private StatusOrdemServico status;
@@ -35,6 +36,14 @@ public class OrdemServicoModel {
 
     public void setNomeCliente(String nomeCliente) {
         this.nomeCliente = nomeCliente;
+    }
+
+    public ClienteModel getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(ClienteModel cliente) {
+        this.cliente = cliente;
     }
 
     public String getDescricao() {

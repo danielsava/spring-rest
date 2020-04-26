@@ -1,5 +1,6 @@
 package app.api.exceptionhandler;
 
+import app.exception.EntidadeNotFoundException;
 import app.exception.NegocioException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -39,6 +40,18 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return this.handleExceptionInternal(ex, problema, new HttpHeaders(), status, webRequest);
     }
 
+    @ExceptionHandler(EntidadeNotFoundException.class)
+    public ResponseEntity<Object> handleEntidadeNotFoundException(NegocioException ex, WebRequest webRequest) {
+
+        HttpStatus status = HttpStatus.NOT_FOUND;
+
+        Problema problema = new Problema();
+        problema.setStatus(status.value());
+        problema.setTitulo(ex.getMessage());
+        problema.setDataHora(OffsetDateTime.now());
+
+        return this.handleExceptionInternal(ex, problema, new HttpHeaders(), status, webRequest);
+    }
 
     /* Manipula Exception do Bean Validation, onde foi utilizada o @Valid no argumento dos métodos */
     @Override
