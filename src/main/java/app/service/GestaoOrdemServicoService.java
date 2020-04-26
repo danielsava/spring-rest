@@ -52,4 +52,14 @@ public class GestaoOrdemServicoService {
 
     }
 
+    public void finalizarOrdemServico(Long ordemServicoId) {
+
+        OrdemServico ordemServico = ordemServicoRepository.findById(ordemServicoId)
+                .orElseThrow(() -> new EntidadeNotFoundException("Ordem Servico não existe "));
+
+        ordemServico.finalizar();
+        ordemServicoRepository.save(ordemServico);
+
+    }
+
 }

@@ -52,6 +52,12 @@ public class OrdemServicoController {
         return ResponseEntity.notFound().build();
     }
 
+    @PutMapping("/{ordemServicoId}/finalizacao")
+    @ResponseStatus(HttpStatus.NO_CONTENT) // É a resposta em caso de sucesso
+    public void finalizar(@PathVariable Long ordemServicoId) {
+        service.finalizarOrdemServico(ordemServicoId);
+    }
+
     private OrdemServicoModel toModel(OrdemServico ordemServico) {
         return modelMapper.map(ordemServico, OrdemServicoModel.class);
     }
@@ -61,7 +67,6 @@ public class OrdemServicoController {
                 .map(this::toModel)
                 .collect(Collectors.toList());
     }
-
 
     private OrdemServico toEntity(OrdemServicoIncluirModel ordemServicoIncluirModel) {
         return modelMapper.map(ordemServicoIncluirModel, OrdemServico.class);

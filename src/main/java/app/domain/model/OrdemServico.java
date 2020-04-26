@@ -1,5 +1,6 @@
 package app.domain.model;
 
+import app.exception.NegocioException;
 import app.validation.ValidationGroups;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -45,6 +46,22 @@ public class OrdemServico {
 
     @OneToMany(mappedBy = "ordemServico")
     private List<Comentario> comentarios = new ArrayList<>();
+
+
+    public void finalizar() {
+        if(naoPodeSerFinalizada())
+            throw new NegocioException("Ordem de Serviço não pode ser finalizada");
+        this.setStatus(StatusOrdemServico.FINALIZADA);
+        this.setDataFinalizacao(OffsetDateTime.now());
+    }
+
+    public boolean podeSerFinalizada() {
+        return StatusOrdemServico.ABERTA.equals(this.status);
+    }
+
+    public boolean naoPodeSerFinalizada() {
+        return !podeSerFinalizada();
+    }
 
 
     @Override
